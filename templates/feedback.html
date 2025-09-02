@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback - KTMantra</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom scrollbar for consistency */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; /* Tailwind gray-300 */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; /* Tailwind gray-400 */
+        }
+
+        /* Star Rating System - Custom CSS as Tailwind doesn't directly support this */
+        .star-rating {
+            display: flex;
+            flex-direction: row-reverse; /* Important for the hover effect */
+            justify-content: flex-end;
+            margin-top: 0.5rem;
+        }
+
+        .star-rating input[type="radio"] {
+            display: none;
+        }
+
+        .star-rating label {
+            font-size: 1.8rem; /* Equivalent to text-2xl or text-3xl */
+            color: #ddd;
+            cursor: pointer;
+            transition: color 0.2s ease;
+            padding: 0 0.2rem;
+        }
+
+        .star-rating input[type="radio"]:checked ~ label,
+        .star-rating label:hover,
+        .star-rating label:hover ~ label {
+            color: #ffc107; /* A standard gold color for stars */
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen font-sans flex flex-col">
+    <!-- Header (Reused from index.html for consistent theme) -->
+    <header class="bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg py-4">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+            <h1 class="text-3xl font-extrabold tracking-tight">KTMantra</h1>
+            <nav>
+                <ul class="flex space-x-6 text-lg">
+                    <li><a href="{{ url_for('index') }}" class="hover:text-blue-200 transition-colors duration-200 ease-in-out">Home</a></li>
+                    <li><a href="{{ url_for('assignment_page') }}" class="hover:text-blue-200 transition-colors duration-200 ease-in-out">Learning</a></li>
+                    <li><a href="https://cognizantonline.sharepoint.com/sites/KH-AIA" target="_blank" rel="noopener noreferrer" class="hover:text-blue-200 transition-colors duration-200 ease-in-out">Know Hub</a></li>
+                    <li><a href="https://cognizantonline.sharepoint.com/sites/KH-AIA/SitePages/TagCloud.aspx" target="_blank" rel="noopener noreferrer" class="hover:text-blue-200 transition-colors duration-200 ease-in-out">Resource</a></li>
+                    <li><a href="{{ url_for('contact_page') }}" class="hover:text-blue-200 transition-colors duration-200 ease-in-out">Contact</a></li>
+                    <li><a href="{{ url_for('feedback_page') }}" class="text-blue-200 font-bold transition-colors duration-200 ease-in-out">Feedback</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="flex-grow flex items-center justify-center p-4">
+        <div class="container mx-auto max-w-2xl w-full bg-white rounded-xl shadow-2xl p-8">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">We’d love your feedback!</h2>
+                <p class="text-lg text-gray-600">Your input helps us improve the Knowledge Transfer experience for everyone.</p>
+            </div>
+
+            <form id="feedback-form" class="space-y-6">
+                <div>
+                    <label class="block text-gray-700 text-sm font-semibold mb-2">Overall Rating</label>
+                    <div class="star-rating">
+                        <input type="radio" id="star5" name="rating" value="5" /><label for="star5" title="5 stars"><i class="fas fa-star"></i></label>
+                        <input type="radio" id="star4" name="rating" value="4" /><label for="star4" title="4 stars"><i class="fas fa-star"></i></label>
+                        <input type="radio" id="star3" name="rating" value="3" /><label for="star3" title="3 stars"><i class="fas fa-star"></i></label>
+                        <input type="radio" id="star2" name="rating" value="2" /><label for="star2" title="2 stars"><i class="fas fa-star"></i></label>
+                        <input type="radio" id="star1" name="rating" value="1" /><label for="star1" title="1 star"><i class="fas fa-star"></i></label>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="category" class="block text-gray-700 text-sm font-semibold mb-2">Feedback Category</label>
+                    <select id="category" name="category"
+                            class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200">
+                        <option value="chatbot">Chatbot Experience</option>
+                        <option value="ui">UI & Design</option>
+                        <option value="assignments">Assignments Page</option>
+                        <option value="videos">Videos</option>
+                        <option value="navigation">Navigation</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="comments" class="block text-gray-700 text-sm font-semibold mb-2">Additional Comments</label>
+                    <textarea id="comments" name="comments" rows="5" placeholder="Tell us more about your experience..."
+                              class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 resize-y transition-all duration-200"></textarea>
+                </div>
+
+                <div class="flex flex-col md:flex-row gap-4">
+                    <div class="flex-1">
+                        <label for="name" class="block text-gray-700 text-sm font-semibold mb-2">Name (Optional)</label>
+                        <input type="text" id="name" name="name" placeholder="Your Name"
+                               class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200">
+                    </div>
+                    <div class="flex-1">
+                        <label for="email" class="block text-gray-700 text-sm font-semibold mb-2">Email (Optional)</label>
+                        <input type="email" id="email" name="email" placeholder="your.email@example.com"
+                               class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200">
+                    </div>
+                </div>
+
+                <button type="submit"
+                        class="w-full bg-purple-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition-colors duration-200 text-lg">
+                    Submit Feedback
+                </button>
+                <div id="form-message" class="mt-4 text-center hidden font-semibold"></div>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const feedbackForm = document.getElementById('feedback-form');
+            const formMessageDiv = document.getElementById('form-message');
+
+            feedbackForm.addEventListener('submit', (e) => {
+                e.preventDefault(); // Prevent the form from actually submitting
+
+                // Display success message
+                formMessageDiv.classList.remove('hidden', 'text-red-600');
+                formMessageDiv.classList.add('text-green-600');
+                formMessageDiv.textContent = "Thank you for your feedback! We appreciate you helping us improve.";
+                formMessageDiv.classList.remove('hidden');
+
+                feedbackForm.reset(); // Clear the form fields
+                
+                // Clear the star rating selection visually after reset
+                const selectedStar = document.querySelector('.star-rating input[name="rating"]:checked');
+                if (selectedStar) {
+                    selectedStar.checked = false;
+                }
+            });
+        });
+    </script>
+</body>
+</html>

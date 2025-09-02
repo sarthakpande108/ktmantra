@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KTMantra - AI Knowledge Assistant</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    /* Custom scrollbar for chat box */
+    #chat-box::-webkit-scrollbar {
+      width: 8px;
+    }
+    #chat-box::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 10px;
+    }
+    #chat-box::-webkit-scrollbar-thumb {
+      background: #cbd5e1; /* Tailwind gray-300 */
+      border-radius: 10px;
+    }
+    #chat-box::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8; /* Tailwind gray-400 */
+    }
+    /* Ensure pre-wrap for proper text formatting from LLM */
+    .chat-message p {
+      white-space: pre-wrap;
+      line-height: 1.6; /* Improve readability of multi-line text */
+    }
+  </style>
+</head>
+<body class="bg-gray-100 min-h-screen font-sans flex flex-col">
+  <header class="bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg py-4">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+      <h1 class="text-3xl font-extrabold tracking-tight">KTMantra</h1>
+      <nav>
+        <ul class="flex space-x-6 text-lg">
+          <li><a href="{{ url_for('assignment_page') }}" class="hover:text-blue-200 transition-colors duration-200 ease-in-out">Learning</a></li>
+          <li><a href="https://cognizantonline.sharepoint.com/sites/KH-AIA" target="_blank" rel="noopener noreferrer" class="hover:text-blue-200 transition-colors duration-200 ease-in-out">Know Hub</a></li>
+          <li><a href="https://cognizantonline.sharepoint.com/sites/KH-AIA/SitePages/TagCloud.aspx" target="_blank" rel="noopener noreferrer" class="hover:text-blue-200 transition-colors duration-200 ease-in-out">Resource</a></li>
+          <li><a href="{{ url_for('contact_page') }}" class="hover:text-blue-200 transition-colors duration-200 ease-in-out">Contact</a></li>
+          <li><a href="{{ url_for('feedback_page') }}" class="hover:text-blue-200 transition-colors duration-200 ease-in-out">Feedback</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="flex-grow flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl shadow-2xl p-8 w-full max-w-4xl flex flex-col">
+      <div class="mb-6 text-center">
+        <h2 class="text-3xl font-bold text-gray-800 mb-2">Project Knowledge Assistant</h2>
+        <p class="text-gray-600 text-lg">Your AI guide to project insights.</p>
+      </div>
+
+      <!-- Project Name Input Section -->
+      <div id="project-input-section" class="mb-6 p-4 border border-gray-200 rounded-lg bg-gray-50 shadow-inner">
+        <label for="project-name" class="block text-gray-700 font-semibold mb-2 text-base">Enter Project Name:</label>
+        <input type="text" id="project-name" placeholder="e.g., 'banking_portal' or 'JBL Project'"
+               class="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 ease-in-out text-base" />
+        <button id="start-session-btn"
+                class="mt-4 w-full bg-blue-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200 ease-in-out text-lg">
+          Start KT Session
+        </button>
+        <div id="start-loading" class="hidden text-center mt-3">
+            <svg class="animate-spin h-8 w-8 text-blue-500 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <p class="mt-2 text-gray-600 text-sm">Loading document and initializing AI...</p>
+        </div>
+        <div id="start-error" class="hidden bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg mt-3" role="alert">
+            <strong class="font-bold">Error:</strong>
+            <span class="block sm:inline" id="start-error-message"></span>
+        </div>
+      </div>
+
+      <!-- Main Chat Area - Initially hidden -->
+      <div id="main-chat-area" class="flex flex-col flex-grow hidden">
+        <!-- Chat Box -->
+        <div id="chat-box" class="flex-grow overflow-y-auto p-4 rounded-lg border border-gray-200 space-y-4 shadow-inner">
+          <!-- Initial bot message (will be replaced by backend's first response) -->
+          <div class="chat-message bot flex justify-start">
+            <div class="bg-gray-100 text-gray-800 p-3 rounded-xl max-w-[80%] shadow-md break-words text-left">
+              <p>Hello! I'm your KTMantra AI assistant. Please enter your project name above to begin.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- User Input Area -->
+        <div class="mt-6 flex items-center space-x-3">
+          <div class="flex-grow relative">
+            <input type="text" id="user-input" placeholder="Type your question or use the microphone..."
+                   class="w-full px-4 py-3 border border-gray-300 rounded-full pr-12 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all duration-200 ease-in-out text-base" />
+            <button id="mic-btn" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-purple-600 transition-colors duration-200 ease-in-out text-lg" title="Ask with voice">
+              <i class="fas fa-microphone"></i>
+            </button>
+          </div>
+          <button id="send-btn"
+                  class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-full font-semibold shadow-lg transition-all duration-200 ease-in-out text-lg">
+            Send
+          </button>
+        </div>
+        <div id="send-loading" class="hidden text-center mt-3">
+            <svg class="animate-spin h-8 w-8 text-purple-500 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+            <p class="mt-2 text-gray-600 text-sm">AI is thinking...</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- JavaScript for client-side logic -->
+  <script>
+    let currentProject = '';
+    const projectInputSection = document.getElementById('project-input-section');
+    const mainChatArea = document.getElementById('main-chat-area');
+    const projectNameInput = document.getElementById('project-name');
+    const startSessionBtn = document.getElementById('start-session-btn');
+    const startLoading = document.getElementById('start-loading');
+    const startError = document.getElementById('start-error');
+    const startErrorMessage = document.getElementById('start-error-message');
+
+    const chatBox = document.getElementById('chat-box');
+    const userInput = document.getElementById('user-input');
+    const sendBtn = document.getElementById('send-btn');
+    const sendLoading = document.getElementById('send-loading');
+
+    // Function to append messages to the chat box
+    function appendMessage(sender, message) {
+        const messageDiv = document.createElement('div');
+        const contentDiv = document.createElement('div');
+        
+        const isBot = sender === 'bot';
+        // Updated background colors for a cleaner look
+        const bgColor = isBot ? 'bg-blue-50' : 'bg-green-50'; 
+        const textColor = 'text-gray-800'; 
+        const justifyClass = isBot ? 'justify-start' : 'justify-end';
+        const marginClass = isBot ? 'mr-auto' : 'ml-auto'; 
+
+        messageDiv.className = `chat-message flex ${justifyClass}`;
+        // Added 'text-left' to ensure content aligns within the bubble
+        contentDiv.className = `rounded-xl p-3 max-w-[80%] shadow-md ${bgColor} ${textColor} ${marginClass} break-words text-left`;
+        
+        // Simple Markdown to HTML conversion for bold text
+        // This regex handles **text** and converts it to <strong>text</strong>
+        const formattedMessage = message.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        contentDiv.innerHTML = `<p>${formattedMessage}</p>`; 
+        
+        messageDiv.appendChild(contentDiv);
+        chatBox.appendChild(messageDiv);
+        chatBox.scrollTop = chatBox.scrollHeight; 
+    }
+
+    // Event listener for starting a new session
+    startSessionBtn.addEventListener('click', async () => {
+        const project = projectNameInput.value.trim();
+        if (!project) {
+            startError.classList.remove('hidden');
+            startErrorMessage.innerText = "Please enter a project name to start the session.";
+            console.warn('Project name is empty.'); 
+            return;
+        }
+
+        console.log('Attempting to start session for project:', project); 
+
+        startError.classList.add('hidden');
+        startLoading.classList.remove('hidden');
+        startSessionBtn.disabled = true;
+
+        try {
+            const response = await fetch('/start', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ project: project })
+            });
+            
+            if (!response.ok) {
+                const errorBody = await response.json();
+                console.error('Backend responded with an error status:', response.status, errorBody); 
+                startError.classList.remove('hidden');
+                startErrorMessage.innerText = `Server error: ${errorBody.error || 'Unknown error'}`;
+                return; 
+            }
+
+            const data = await response.json();
+            console.log('Response from /start:', data); 
+
+            if (data.error) {
+                startError.classList.remove('hidden');
+                startErrorMessage.innerText = data.error;
+                console.error('Backend application error:', data.error); 
+            } else {
+                currentProject = project;
+                projectInputSection.classList.add('hidden'); 
+                mainChatArea.classList.remove('hidden'); 
+                
+                chatBox.innerHTML = ''; 
+                console.log('Appending initial bot message:', data.reply); 
+                appendMessage('bot', data.reply); 
+            }
+        } catch (error) {
+            console.error('Network or parsing error during session start:', error); 
+            startError.classList.remove('hidden');
+            startErrorMessage.innerText = 'An unexpected error occurred. Please check the server and your network connection.';
+        } finally {
+            startLoading.classList.add('hidden');
+            startSessionBtn.disabled = false;
+        }
+    });
+
+    // Event listener for sending a message
+    sendBtn.addEventListener('click', async () => {
+        const message = userInput.value.trim();
+        if (!message) return;
+
+        appendMessage('user', message);
+        userInput.value = ''; 
+
+        sendLoading.classList.remove('hidden');
+        sendBtn.disabled = true;
+        userInput.disabled = true; 
+
+        try {
+            const response = await fetch('/reply', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ project: currentProject, user_reply: message })
+            });
+
+            if (!response.ok) {
+                const errorBody = await response.json();
+                console.error('Backend responded with an error status:', response.status, errorBody); 
+                appendMessage('bot', `Server error: ${errorBody.error || 'Unknown error'}`);
+                return; 
+            }
+
+            const data = await response.json();
+            console.log('Response from /reply:', data); 
+
+            if (data.error) {
+                appendMessage('bot', `Error: ${data.error}`);
+                console.error('Backend application error:', data.error); 
+            } else {
+                appendMessage('bot', data.reply);
+            }
+        } catch (error) {
+            console.error('Network or parsing error during message send:', error); 
+            appendMessage('bot', 'An unexpected error occurred while sending your message. Please check the server and your network connection.');
+        } finally {
+            sendLoading.classList.add('hidden');
+            sendBtn.disabled = false;
+            userInput.disabled = false; 
+            userInput.focus(); 
+        }
+    });
+
+    // Allow sending message with Enter key
+    userInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            sendBtn.click();
+        }
+    });
+
+    // Placeholder for mic button functionality (not implemented in backend)
+    document.getElementById('mic-btn').addEventListener('click', () => {
+        alert('Microphone input is not yet implemented.');
+    });
+  </script>
+</body>
+</html>

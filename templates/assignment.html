@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Assignments - KTMantra</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen font-sans flex flex-col">
+    <header class="bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg py-4">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+            <h1 class="text-3xl font-extrabold tracking-tight">KTMantra</h1>
+            <nav>
+                <ul class="flex space-x-6 text-lg">
+                    <li><a href="{{ url_for('index') }}" class="hover:text-blue-200 transition-colors duration-200 ease-in-out">Home</a></li>
+                    <li><a href="{{ url_for('assignment_page') }}" class="text-blue-200 font-bold transition-colors duration-200 ease-in-out">Learning</a></li>
+                    <li><a href="https://cognizantonline.sharepoint.com/sites/KH-AIA" target="_blank" rel="noopener noreferrer" class="hover:text-blue-200 transition-colors duration-200 ease-in-out">Know Hub</a></li>
+                    <li><a href="https://cognizantonline.sharepoint.com/sites/KH-AIA/SitePages/TagCloud.aspx" target="_blank" rel="noopener noreferrer" class="hover:text-blue-200 transition-colors duration-200 ease-in-out">Resource</a></li>
+                    <li><a href="{{ url_for('contact_page') }}" class="hover:text-blue-200 transition-colors duration-200 ease-in-out">Contact</a></li>
+                    <li><a href="{{ url_for('feedback_page') }}" class="hover:text-blue-200 transition-colors duration-200 ease-in-out">Feedback</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="flex-grow flex flex-col items-center p-8">
+        <div class="container mx-auto max-w-7xl">
+            <div class="text-center mb-10">
+                <h2 class="text-4xl font-bold text-gray-800 mb-2">Learning Assignments</h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">Select a technology below to start your learning journey and enhance your skills. The links will take you to relevant learning resources on Udemy.</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <div class="bg-white rounded-xl shadow-lg p-6 flex flex-col transition-all duration-300 hover:translate-y-[-5px] hover:shadow-xl">
+                    <h3 class="text-xl font-bold text-blue-600 mb-2">SQL</h3>
+                    <p class="text-gray-600 flex-grow mb-4">Master structured query language for database management.</p>
+                    <a href="https://www.udemy.com/topic/sql/" target="_blank" rel="noopener noreferrer"
+                       class="inline-block bg-blue-600 text-white px-6 py-3 rounded-full font-semibold text-center transition-all duration-300 hover:bg-blue-700 hover:scale-105">
+                        Start Learning
+                    </a>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg p-6 flex flex-col transition-all duration-300 hover:translate-y-[-5px] hover:shadow-xl">
+                    <h3 class="text-xl font-bold text-blue-600 mb-2">Microsoft Azure</h3>
+                    <p class="text-gray-600 flex-grow mb-4">Explore Microsoft's cloud computing platform and services.</p>
+                    <a href="https://www.udemy.com/topic/microsoft-azure/" target="_blank" rel="noopener noreferrer"
+                       class="inline-block bg-blue-600 text-white px-6 py-3 rounded-full font-semibold text-center transition-all duration-300 hover:bg-blue-700 hover:scale-105">
+                        Start Learning
+                    </a>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg p-6 flex flex-col transition-all duration-300 hover:translate-y-[-5px] hover:shadow-xl">
+                    <h3 class="text-xl font-bold text-blue-600 mb-2">Amazon Web Services</h3>
+                    <p class="text-gray-600 flex-grow mb-4">Learn the leading cloud platform for scalable applications.</p>
+                    <a href="https://www.udemy.com/topic/aws-certified-solutions-architect-associate/" target="_blank" rel="noopener noreferrer"
+                       class="inline-block bg-blue-600 text-white px-6 py-3 rounded-full font-semibold text-center transition-all duration-300 hover:bg-blue-700 hover:scale-105">
+                        Start Learning
+                    </a>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg p-6 flex flex-col transition-all duration-300 hover:translate-y-[-5px] hover:shadow-xl">
+                    <h3 class="text-xl font-bold text-blue-600 mb-2">SAP</h3>
+                    <p class="text-gray-600 flex-grow mb-4">Understand enterprise resource planning and data management.</p>
+                    <a href="https://www.udemy.com/topic/sap-erp/" target="_blank" rel="noopener noreferrer"
+                       class="inline-block bg-blue-600 text-white px-6 py-3 rounded-full font-semibold text-center transition-all duration-300 hover:bg-blue-700 hover:scale-105">
+                        Start Learning
+                    </a>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg p-6 flex flex-col transition-all duration-300 hover:translate-y-[-5px] hover:shadow-xl">
+                    <h3 class="text-xl font-bold text-blue-600 mb-2">Python</h3>
+                    <p class="text-gray-600 flex-grow mb-4">A versatile language for web development, data science, and more.</p>
+                    <a href="https://www.udemy.com/topic/python/" target="_blank" rel="noopener noreferrer"
+                       class="inline-block bg-blue-600 text-white px-6 py-3 rounded-full font-semibold text-center transition-all duration-300 hover:bg-blue-700 hover:scale-105">
+                        Start Learning
+                    </a>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg p-6 flex flex-col transition-all duration-300 hover:translate-y-[-5px] hover:shadow-xl">
+                    <h3 class="text-xl font-bold text-blue-600 mb-2">Java</h3>
+                    <p class="text-gray-600 flex-grow mb-4">A robust, object-oriented language for enterprise applications.</p>
+                    <a href="https://www.udemy.com/topic/java/" target="_blank" rel="noopener noreferrer"
+                       class="inline-block bg-blue-600 text-white px-6 py-3 rounded-full font-semibold text-center transition-all duration-300 hover:bg-blue-700 hover:scale-105">
+                        Start Learning
+                    </a>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg p-6 flex flex-col transition-all duration-300 hover:translate-y-[-5px] hover:shadow-xl">
+                    <h3 class="text-xl font-bold text-blue-600 mb-2">React</h3>
+                    <p class="text-gray-600 flex-grow mb-4">Build modern, dynamic user interfaces with this JavaScript library.</p>
+                    <a href="https://www.udemy.com/topic/react/" target="_blank" rel="noopener noreferrer"
+                       class="inline-block bg-blue-600 text-white px-6 py-3 rounded-full font-semibold text-center transition-all duration-300 hover:bg-blue-700 hover:scale-105">
+                        Start Learning
+                    </a>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg p-6 flex flex-col transition-all duration-300 hover:translate-y-[-5px] hover:shadow-xl">
+                    <h3 class="text-xl font-bold text-blue-600 mb-2">Power BI</h3>
+                    <p class="text-gray-600 flex-grow mb-4">Create interactive data visualizations and business intelligence reports.</p>
+                    <a href="https://www.udemy.com/topic/power-bi/" target="_blank" rel="noopener noreferrer"
+                       class="inline-block bg-blue-600 text-white px-6 py-3 rounded-full font-semibold text-center transition-all duration-300 hover:bg-blue-700 hover:scale-105">
+                        Start Learning
+                    </a>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg p-6 flex flex-col transition-all duration-300 hover:translate-y-[-5px] hover:shadow-xl">
+                    <h3 class="text-xl font-bold text-blue-600 mb-2">DevOps</h3>
+                    <p class="text-gray-600 flex-grow mb-4">Learn the practices that combine software development and IT operations.</p>
+                    <a href="https://www.udemy.com/topic/devops/" target="_blank" rel="noopener noreferrer"
+                       class="inline-block bg-blue-600 text-white px-6 py-3 rounded-full font-semibold text-center transition-all duration-300 hover:bg-blue-700 hover:scale-105">
+                        Start Learning
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
