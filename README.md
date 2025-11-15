@@ -2,6 +2,10 @@
 
 KT Mantra is an AI-powered Knowledge Transfer automation system designed to onboard new employees faster and more efficiently. It simplifies project KT by delivering contextual learning, interactive chat-based training, and document-driven Q&A.
 
+
+## 🔗 Live Link
+▶️ **Try Now:**  https://ktmantra.vercel.app/
+
 ---
 
 ## 🎯 Project Goal
