@@ -1,0 +1,78 @@
+📘 KT Mantra – Intelligent Knowledge Transfer Chatbot
+
+KT Mantra is an AI-powered Knowledge Transfer automation system designed to onboard new employees faster and more efficiently. It simplifies project KT by delivering contextual learning, interactive chat-based training, and document-driven Q&A.
+
+🎯 Project Goal
+
+To eliminate manual KT dependency and ensure new joiners can:
+
+Understand project documentation in a structured way
+
+Learn gradually with interactive question-answering
+
+Ask doubts anytime like chatting with a mentor
+
+🧠 What KT Mantra Does
+
+KT Mantra acts as an AI Teacher:
+
+1️⃣ User selects a Project Name in UI
+2️⃣ System loads the respective documentation
+3️⃣ The chatbot explains the content step-by-step
+4️⃣ After each section, the bot checks understanding
+5️⃣ Users can ask questions anytime
+6️⃣ Bot only moves ahead once user confirms readiness
+
+This ensures KT is smooth, structured, and interactive.
+
+✨ Features
+Feature	Description
+Document Parsing	Supports PDF, DOCX extraction
+RAG-based QA	Answers only from provided project docs
+Teacher Mode	Validates learning section by section
+User Interaction	Chat-style KT communication
+Automatic Knowledge Progression	Continues only when user is ready
+🧩 Tech Stack
+Component	Technology
+Backend	Python (Flask)
+LLM	Google Gemini API
+Vector Search	Embeddings + RAG
+File Processing	pdfplumber, python-docx
+Frontend	HTML + CSS + JavaScript
+Deployment	Render / GCP / Local
+🖥️ UI Preview
+
+Below is the UI image used in the project 👇
+
+
+
+
+📦 Installation
+git clone https://github.com/<your-username>/kt-mantra.git
+cd kt-mantra
+pip install -r requirements.txt
+🔐 Environment Variables
+
+Create .env with:
+
+GEMINI_API_KEY=
+▶️ How to Run
+python app.py
+
+Open browser → http://localhost:5000
+
+🚀 Future Enhancements
+
+Multi-project support with DB storage
+
+User onboarding progress tracking
+
+Voice assistant integration
+
+Admin dashboard for document uploads
+
+👤 Author
+
+Sarthak Pande
+
+⭐ If this project helped or inspired you, please give it a Star on GitHub!
