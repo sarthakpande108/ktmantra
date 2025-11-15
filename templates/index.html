@@ -134,7 +134,7 @@
     let currentProject = '';
     const projectInputSection = document.getElementById('project-input-section');
     const mainChatArea = document.getElementById('main-chat-area');
-    const projectNameInput = document.getElementById('project-name');
+    const projectSelect = document.getElementById('project-select');
     const startSessionBtn = document.getElementById('start-session-btn');
     const startLoading = document.getElementById('start-loading');
     const startError = document.getElementById('start-error');
@@ -173,7 +173,7 @@
 
     // Event listener for starting a new session
     startSessionBtn.addEventListener('click', async () => {
-        const project = projectNameInput.value.trim();
+       const project = projectSelect.value;
         if (!project) {
             startError.classList.remove('hidden');
             startErrorMessage.innerText = "Please enter a project name to start the session.";
