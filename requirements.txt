@@ -1,0 +1,11 @@
+Flask
+gunicorn
+pdfplumber
+python-docx
+google-generativeai
+python-dotenv
+Werkzeug
+jinja2
+itsdangerous
+click
+flask-cors
