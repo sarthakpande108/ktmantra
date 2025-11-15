@@ -3,6 +3,11 @@ import os
 import pdfplumber
 import docx
 import google.generativeai as genai
+import dotenv
+
+dotenv.load_dotenv()
+
+api_key = os.getenv("GEMINI_API_KEY")
 
 # Initialize Flask application
 app = Flask(__name__)
@@ -13,8 +18,8 @@ if not os.path.exists(app.config['UPLOAD_FOLDER']):
     os.makedirs(app.config['UPLOAD_FOLDER'])
 
 # Configure Gemini with a placeholder API key
-genai.configure(api_key="AIzaSyBxZv9Bq1chyq1cFZtPzZLgZ2-XRzctdlM")
-model = genai.GenerativeModel("gemini-2.0-flash")
+genai.configure(api_key=api_key )
+model = genai.GenerativeModel("gemini-2.5-flash")
 
 # In-memory teaching sessions: project -> session state
 # A dictionary to store active chat sessions, not suitable for production.
